@@ -1,0 +1,45 @@
+<html>
+<head>
+<script>
+ 	function register() {
+ 		var username = document.getElementById("username").value;
+ 		if (username == "") {
+ 			alert("Cannot register an empty name");
+ 		} else {
+ 			location.href = "register/" + username;
+ 		}
+	}
+</script>
+</head>
+<body>
+	
+	
+	<a href="{% url 'global' %}">Global posts</a><br>
+	
+	{% if username %}
+	<h1>{{username}}</h1>
+	<form method="post" action="{% url 'writePost' %}">
+		<input type="hidden" value={{username}} name="username">
+		<label for="content">Please input your posts:</label>
+		<input type="text" id="content" name="content">
+		<input type="submit">
+		{% csrf_token %}
+	</form>
+	{% else %}
+	<form method="post" action="{% url 'mypost' %}" >
+		<label for="username">Please input your username:</label>
+		<input type="text" name="username" id="username">
+		<input type="submit">
+		<input type="button" value="register" onclick="register()"> 
+		{% csrf_token %}
+	</form>
+	{% endif %}
+	
+	<h2>Post:</h2>
+	<ul id="posts">
+		{% for post in posts %}
+		<li>{{post.content}}</li>
+		{% endfor %}
+	</ul>
+</body>
+</html>
